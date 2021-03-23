@@ -3,4 +3,5 @@
     <string name="setting">Setting Alarm</string>
     <string name="cancel">Cancel Alarm</string>
     <string name="alert">Alert Dialog</string>
+    <string name="notification">Notification</string>
 </resources>
