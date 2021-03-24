@@ -4,4 +4,6 @@
     <string name="cancel">Cancel Alarm</string>
     <string name="alert">Alert Dialog</string>
     <string name="notification">Notification</string>
+    <string name="AlermReminder">鬧鐘提醒</string>
+    <string name="TimeUp">時間到了，該起床了!!</string>
 </resources>

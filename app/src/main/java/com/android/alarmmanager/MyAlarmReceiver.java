@@ -45,8 +45,8 @@ public class MyAlarmReceiver extends BroadcastReceiver {
     public AlertDialog AlertDialog_Simple_Example(Context context){
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
-        builder.setTitle("鬧鐘提醒");
-        builder.setMessage("時間到了，該起床了!!");
+        builder.setTitle(R.string.AlermReminder);
+        builder.setMessage(R.string.TimeUp);
         builder.setIcon(R.drawable.kitty033);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -63,6 +63,9 @@ public class MyAlarmReceiver extends BroadcastReceiver {
 
     private void ShowNotification(Context context)
     {
+        Intent backToMain = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, backToMain, 0);
+
         //Step1. 初始化NotificationManager，取得Notification服務
         NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(NOTIFICATION_SERVICE);
         Notification.Builder builder = new Notification.Builder(context)
@@ -70,8 +73,9 @@ public class MyAlarmReceiver extends BroadcastReceiver {
                 .setWhen(System.currentTimeMillis())// 設置時間發生時間
                 .setSmallIcon(R.drawable.kitty033) // 設置狀態列裡面的圖示（小圖示）　　
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.kitty033)) // 下拉下拉清單裡面的圖示（大圖示）
-                .setContentTitle("鬧鈴通知") // 設置下拉清單裡的標題
-                .setContentText("時間到了，該起床了!!");// 設置上下文內容
+                .setContentIntent(pendingIntent)   //設定Notification 點擊返回的Activity
+                .setContentTitle(context.getString(R.string.AlermReminder)) // 設置下拉清單裡的標題
+                .setContentText(context.getString(R.string.TimeUp));// 設置上下文內容
         mNotificationManager.notify(0, builder.build());
 
     }

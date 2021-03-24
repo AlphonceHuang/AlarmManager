@@ -133,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder;
 
         builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("時間到了~~");
-        builder.setMessage("該起床了!!");
+        builder.setTitle(R.string.AlermReminder);
+        builder.setMessage(R.string.TimeUp);
         builder.setIcon(R.drawable.kitty033);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         //Step3. 透過 Notification.Builder 來建構 notification，
         //並直接使用其.build() 的方法將設定好屬性的 Builder 轉換
         //成 notification，最後開始將顯示通知訊息發送至狀態列上。
+
         Notification notification
                 = new Notification.Builder(MainActivity.this)
                 .setContentIntent(appIntent)
@@ -170,8 +171,8 @@ public class MainActivity extends AppCompatActivity {
                 .setTicker("notification on status bar.") // 設置狀態列的顯示的資訊
                 .setWhen(System.currentTimeMillis())// 設置時間發生時間
                 .setAutoCancel(false) // 設置通知被使用者點擊後是否清除  //notification.flags = Notification.FLAG_AUTO_CANCEL;
-                .setContentTitle("Notification Title") // 設置下拉清單裡的標題
-                .setContentText("Notification Content")// 設置上下文內容
+                .setContentTitle(getString(R.string.AlermReminder)) // 設置下拉清單裡的標題
+                .setContentText(getString(R.string.TimeUp))// 設置上下文內容
                 .setOngoing(true)      //true使notification變為ongoing，用戶不能手動清除// notification.flags = Notification.FLAG_ONGOING_EVENT; notification.flags = Notification.FLAG_NO_CLEAR;
                 .setDefaults(Notification.DEFAULT_ALL) //使用所有默認值，比如聲音，震動，閃屏等等
                 //.setDefaults(Notification.DEFAULT_VIBRATE) //使用默認手機震動提示
