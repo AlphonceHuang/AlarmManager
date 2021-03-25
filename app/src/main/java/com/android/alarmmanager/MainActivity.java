@@ -2,6 +2,7 @@ package com.android.alarmmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Notification;
@@ -13,9 +14,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -29,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private Button b_Notify;
     private AlarmManager alarmManager;
     private PendingIntent pi;
+
+    private TextView mCountDownText;
+    private Button b_CountDownStart, b_CountdownStop;
+    private TextView mCountDown;
+
+    CountDownTimer CDT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +54,18 @@ public class MainActivity extends AppCompatActivity {
         b_cancel.setOnClickListener(btn);
         b_Alert.setOnClickListener(btn);
         b_Notify.setOnClickListener(btn);
+
+        mCountDownText = findViewById(R.id.CountDownNumber);
+        b_CountDownStart = findViewById(R.id.CountDownStartButton);
+        b_CountDownStart.setOnClickListener(btn);
+        b_CountdownStop = findViewById(R.id.CountDownStopButton);
+        b_CountdownStop.setOnClickListener(btn);
+        mCountDown = findViewById(R.id.CountDownLeftText);
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        CDT.cancel();
     }
 
     private void StartAlarm()
@@ -80,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
     private final View.OnClickListener btn=new View.OnClickListener() {
 
         AlertDialog alertDialog;
-        AlertDialog.Builder builder;
 
         @Override
         public void onClick(View v) {
@@ -101,27 +122,20 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.AlertButton:
-/*
-                    builder = new AlertDialog.Builder(MainActivity.this);
-                    builder.setTitle("時間到了");
-                    builder.setMessage("該起床了");
-                    builder.setIcon(R.drawable.kitty033);
-                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.w("Alan", "Positive Button");
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.setCancelable(false);
-                    alertDialog = builder.create();
-*/
                     alertDialog = Creat_AlertDialog();
                     alertDialog.show();
                     break;
 
                 case R.id.NotifiButton:
                     ShowNotification();
+                    break;
+
+                case R.id.CountDownStartButton:
+                    StartCountDown(v);
+                    break;
+
+                case R.id.CountDownStopButton:
+                    StopCountDown();
                     break;
             }
         }
@@ -162,7 +176,6 @@ public class MainActivity extends AppCompatActivity {
         //Step3. 透過 Notification.Builder 來建構 notification，
         //並直接使用其.build() 的方法將設定好屬性的 Builder 轉換
         //成 notification，最後開始將顯示通知訊息發送至狀態列上。
-
         Notification notification
                 = new Notification.Builder(MainActivity.this)
                 .setContentIntent(appIntent)
@@ -210,5 +223,35 @@ public class MainActivity extends AppCompatActivity {
         //取消以前顯示的所有通知.
         //mNotificationManager.cancelAll();
 
+    }
+
+    private void StartCountDown(View view)
+    {
+        Long setting = Long.parseLong((mCountDownText.getText().toString()));
+
+        if (null != setting) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
+            mCountDownText.setText("");
+        }
+
+        CDT = new CountDownTimer(setting*1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                mCountDown.setText("" + millisUntilFinished/1000);
+            }
+
+            public void onFinish() {
+                mCountDown.setText(R.string.Done);
+            }
+        }.start();
+    }
+
+    private void StopCountDown() {
+        CDT.cancel();
+        mCountDown.setText("");
+        mCountDownText.setText("");
     }
 }

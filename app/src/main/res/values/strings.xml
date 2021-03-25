@@ -6,4 +6,8 @@
     <string name="notification">Notification</string>
     <string name="AlermReminder">鬧鐘提醒</string>
     <string name="TimeUp">時間到了，該起床了!!</string>
+    <string name="Start">Start</string>
+    <string name="sec">sec</string>
+    <string name="Stop">Stop</string>
+    <string name="Done">Done</string>
 </resources>
