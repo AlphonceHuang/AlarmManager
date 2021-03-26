@@ -237,10 +237,11 @@ public class MainActivity extends AppCompatActivity {
             mCountDownText.setText("");
         }
 
-        CDT = new CountDownTimer(setting*1000, 1000) {
+        CDT = new CountDownTimer(setting*1000, 100) {
 
             public void onTick(long millisUntilFinished) {
-                mCountDown.setText("" + millisUntilFinished/1000);
+
+                mCountDown.setText("" + millisUntilFinished/1000+":"+millisUntilFinished%1000);
             }
 
             public void onFinish() {
